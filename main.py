@@ -1,15 +1,15 @@
-from fastapi import FastAPI
+from fastapi import FastAPI, HTTPException, Depends
 from pydantic import BaseModel
 from typing import List
 from datetime import date
+from sqlalchemy.orm import Session
+import models
+from database import engine, SessionLocal
+
+# Creates the database tables on startup if they don't exist
+models.Base.metadata.create_all(bind=engine)
 
 app = FastAPI()
-
-# This is our "database" for now - just a Python list in memory
-pantry_items = []
-
-# This is the start id for post endpoitn
-next_id = 1
 
 # Define what a pantry item looks like
 
@@ -20,73 +20,79 @@ class PantryItem(BaseModel):
     expiration_date: date
     category: str  # like "dairy", "produce", "meat"
 
+# Opens and closes a database session for each request
+
+
+def get_db():
+    db = SessionLocal()
+    try:
+        yield db
+    finally:
+        db.close()
+
 # GET =====================================================================================
 
 
 @app.get("/")
-def root():
+def health():
     return {"message": "Pantry Pal API is running!"}
 
-
 # GET all items
-@app.get("/pantry/items")
-def get_items():
-    return {"items": pantry_items}
 
+
+@app.get("/pantry/items")
+def get_items(db: Session = Depends(get_db)):
+    items = db.query(models.PantryItem).all()
+    return {"items": items}
 
 # GET single item by ID
+
+
 @app.get("/pantry/items/{item_id}")
-def get_item(item_id: int):
-    for item in pantry_items:
-        if item["id"] == item_id:
-            return item
-    return {"error": "Item not found"}
+def get_item(item_id: int, db: Session = Depends(get_db)):
+    item = db.query(models.PantryItem).filter(
+        models.PantryItem.id == item_id).first()
+    if item is None:
+        raise HTTPException(status_code=404, detail="Item not found")
+    return item
 
 # POST ===================================================================================
 
-
 # POST new item
+
+
 @app.post("/pantry/items")
-def add_item(item: PantryItem):
-    global next_id  # This lets us modify the next_id variable
-
-    # Convert the item to a dictionary and add an ID
-    item_dict = item.dict()
-    item_dict["id"] = next_id
-    next_id += 1  # Increment for the next item
-
-    pantry_items.append(item_dict)
-    return {"message": "Item added!", "item": item_dict}
-
+def add_item(item: PantryItem, db: Session = Depends(get_db)):
+    db_item = models.PantryItem(**item.model_dump())
+    db.add(db_item)
+    db.commit()
+    db.refresh(db_item)
+    return {"message": "Item added!", "item": db_item}
 
 # DELETE ====================================================================================
 
 
 @app.delete("/pantry/items/{item_id}")
-def delete_item(item_id: int):
-    # Find the item with this ID
-    for i, item in enumerate(pantry_items):
-        if item["id"] == item_id:
-            deleted_item = pantry_items.pop(i)
-            return {"message": "Item deleted!", "item": deleted_item}
-
-    # If we get here, item wasn't found
-    return {"error": "Item not found"}
-
+def delete_item(item_id: int, db: Session = Depends(get_db)):
+    item = db.query(models.PantryItem).filter(
+        models.PantryItem.id == item_id).first()
+    if item is None:
+        raise HTTPException(status_code=404, detail="Item not found")
+    db.delete(item)
+    db.commit()
+    return {"message": "Item deleted!", "item": item}
 
 # PUT =====================================================================================
 
 
 @app.put("/pantry/items/{item_id}")
-def update_item(item_id: int, updated_item: PantryItem):
-    # Find the item with this ID
-    for i, item in enumerate(pantry_items):
-        if item["id"] == item_id:
-            # Keep the original ID, update everything else
-            item_dict = updated_item.dict()
-            item_dict["id"] = item_id  # Don't let the ID change!
-            pantry_items[i] = item_dict
-            return {"message": "Item updated!", "item": item_dict}
-
-    # If we get here, item wasn't found
-    return {"error": "Item not found"}
+def update_item(item_id: int, updated_item: PantryItem, db: Session = Depends(get_db)):
+    item = db.query(models.PantryItem).filter(
+        models.PantryItem.id == item_id).first()
+    if item is None:
+        raise HTTPException(status_code=404, detail="Item not found")
+    for key, value in updated_item.model_dump().items():
+        setattr(item, key, value)
+    db.commit()
+    db.refresh(item)
+    return {"message": "Item updated!", "item": item}
