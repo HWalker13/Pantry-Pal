@@ -1,7 +1,7 @@
 from fastapi import FastAPI, HTTPException, Depends
 from pydantic import BaseModel
 from typing import List
-from datetime import date
+from datetime import date, timedelta
 from sqlalchemy.orm import Session
 import models
 from database import engine, SessionLocal
@@ -45,6 +45,30 @@ def get_items(db: Session = Depends(get_db)):
     items = db.query(models.PantryItem).all()
     return {"items": items}
 
+# GET items expiring within the next 7 days
+
+
+@app.get("/pantry/items/expiring-soon")
+def get_expiring_soon(db: Session = Depends(get_db)):
+    today = date.today()
+    seven_days = today + timedelta(days=7)
+    items = db.query(models.PantryItem).filter(
+        models.PantryItem.expiration_date >= today,
+        models.PantryItem.expiration_date <= seven_days
+    ).all()
+    return {"expiring_soon": items}
+
+
+# GET items that are already expired
+@app.get("/pantry/items/expired")
+def get_expired(db: Session = Depends(get_db)):
+    today = date.today()
+    items = db.query(models.PantryItem).filter(
+        models.PantryItem.expiration_date < today
+    ).all()
+    return {"expired": items}
+
+
 # GET single item by ID
 
 
@@ -55,6 +79,7 @@ def get_item(item_id: int, db: Session = Depends(get_db)):
     if item is None:
         raise HTTPException(status_code=404, detail="Item not found")
     return item
+
 
 # POST ===================================================================================
 
