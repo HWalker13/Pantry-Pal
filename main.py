@@ -4,7 +4,7 @@ from typing import List
 from datetime import date, timedelta
 from sqlalchemy.orm import Session
 import models
-from database import engine, SessionLocal
+from database import engine, Base, get_db
 
 # Creates the database tables on startup if they don't exist
 models.Base.metadata.create_all(bind=engine)
@@ -19,16 +19,6 @@ class PantryItem(BaseModel):
     quantity: int
     expiration_date: date
     category: str  # like "dairy", "produce", "meat"
-
-# Opens and closes a database session for each request
-
-
-def get_db():
-    db = SessionLocal()
-    try:
-        yield db
-    finally:
-        db.close()
 
 # GET =====================================================================================
 
