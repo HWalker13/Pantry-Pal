@@ -20,6 +20,16 @@ class PantryItem(BaseModel):
     expiration_date: date
     category: str  # like "dairy", "produce", "meat"
 
+
+class RecipeSuggestion(BaseModel):
+    id: int
+    name: str
+    description: str
+    missing_ingredients: List[str]
+    missing_count: int
+
+    model_config = {"from_attributes": True}
+
 # GET =====================================================================================
 
 
@@ -111,3 +121,31 @@ def update_item(item_id: int, updated_item: PantryItem, db: Session = Depends(ge
     db.commit()
     db.refresh(item)
     return {"message": "Item updated!", "item": item}
+
+# RECIPES ==================================================================================
+
+
+@app.get("/recipes/suggestions", response_model=List[RecipeSuggestion])
+def get_recipe_suggestions(db: Session = Depends(get_db)):
+    pantry_items = db.query(models.PantryItem).all()
+    pantry_names = {item.name.lower() for item in pantry_items}
+
+    recipes = db.query(models.Recipe).all()
+
+    suggestions = []
+    for recipe in recipes:
+        missing = [
+            ing.ingredient_name
+            for ing in recipe.ingredients
+            if ing.ingredient_name.lower() not in pantry_names
+        ]
+        suggestions.append(RecipeSuggestion(
+            id=recipe.id,
+            name=recipe.name,
+            description=recipe.description,
+            missing_ingredients=missing,
+            missing_count=len(missing),
+        ))
+
+    suggestions.sort(key=lambda r: r.missing_count)
+    return suggestions[:10]
