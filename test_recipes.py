@@ -57,13 +57,21 @@ def create_recipe(name, description, instructions, ingredients):
         db.close()
 
 
-def add_pantry_item(name):
-    client.post("/pantry/items", json={
+def register_and_login(email="recipe_test@example.com", password="testpass"):
+    """Register a user and return their JWT token."""
+    client.post("/auth/register", json={"email": email, "password": password})
+    resp = client.post("/auth/login", json={"email": email, "password": password})
+    return resp.json()["access_token"]
+
+
+def add_pantry_item(name, token):
+    response = client.post("/pantry/items", json={
         "name": name,
         "quantity": 1,
         "expiration_date": str(date.today() + timedelta(days=30)),
         "category": "other",
-    })
+    }, headers={"Authorization": f"Bearer {token}"})
+    assert response.status_code == 200
 
 
 # =============================================================================
@@ -72,6 +80,8 @@ def add_pantry_item(name):
 
 def test_suggestions_sorted_by_missing_count():
     """Recipes with fewer missing ingredients should appear first."""
+    token = register_and_login("sorted@example.com")
+
     # Recipe A: needs 3 ingredients, pantry has 1 → 2 missing
     create_recipe(
         name="Recipe A",
@@ -93,9 +103,9 @@ def test_suggestions_sorted_by_missing_count():
         ],
     )
 
-    add_pantry_item("eggs")
+    add_pantry_item("eggs", token)
 
-    response = client.get("/recipes/suggestions")
+    response = client.get("/recipes/suggestions", headers={"Authorization": f"Bearer {token}"})
     assert response.status_code == 200
     results = response.json()
 
@@ -108,6 +118,8 @@ def test_suggestions_sorted_by_missing_count():
 
 def test_suggestions_empty_pantry():
     """With no pantry items, all recipe ingredients should be missing."""
+    token = register_and_login("empty@example.com")
+
     create_recipe(
         name="Simple Recipe",
         description="Three ingredients",
@@ -119,7 +131,7 @@ def test_suggestions_empty_pantry():
         ],
     )
 
-    response = client.get("/recipes/suggestions")
+    response = client.get("/recipes/suggestions", headers={"Authorization": f"Bearer {token}"})
     assert response.status_code == 200
     results = response.json()
 
@@ -130,6 +142,8 @@ def test_suggestions_empty_pantry():
 
 def test_suggestions_full_pantry_match():
     """When the pantry has all ingredients, missing_count should be 0."""
+    token = register_and_login("full@example.com")
+
     create_recipe(
         name="Eggs and Butter",
         description="Simple pantry recipe",
@@ -140,10 +154,10 @@ def test_suggestions_full_pantry_match():
         ],
     )
 
-    add_pantry_item("eggs")
-    add_pantry_item("butter")
+    add_pantry_item("eggs", token)
+    add_pantry_item("butter", token)
 
-    response = client.get("/recipes/suggestions")
+    response = client.get("/recipes/suggestions", headers={"Authorization": f"Bearer {token}"})
     assert response.status_code == 200
     results = response.json()
 
@@ -154,6 +168,8 @@ def test_suggestions_full_pantry_match():
 
 def test_suggestions_response_schema():
     """Each suggestion should have the correct fields with correct types."""
+    token = register_and_login("schema@example.com")
+
     create_recipe(
         name="Schema Test Recipe",
         description="Testing the response shape",
@@ -163,7 +179,7 @@ def test_suggestions_response_schema():
         ],
     )
 
-    response = client.get("/recipes/suggestions")
+    response = client.get("/recipes/suggestions", headers={"Authorization": f"Bearer {token}"})
     assert response.status_code == 200
     results = response.json()
 
