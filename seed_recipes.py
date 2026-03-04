@@ -1,7 +1,7 @@
-from database import SessionLocal, engine
-import models
+from app.database import SessionLocal, engine, Base
+from app import models
 
-models.Base.metadata.create_all(bind=engine)
+Base.metadata.create_all(bind=engine)
 
 RECIPES = [
     {
