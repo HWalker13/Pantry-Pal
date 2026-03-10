@@ -10,6 +10,18 @@ class PantryItem(BaseModel):
     category: str
 
 
+class AIRecipe(BaseModel):
+    name: str
+    description: str
+    ingredients: List[str]
+    instructions: str
+    uses_from_pantry: List[str]
+
+
+class AIRecipeSuggestionsResponse(BaseModel):
+    recipes: List[AIRecipe]
+
+
 class RecipeSuggestion(BaseModel):
     id: int
     name: str
