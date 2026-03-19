@@ -1,13 +1,14 @@
 from pydantic import BaseModel
 from datetime import date
-from typing import List
+from typing import List, Optional
 
 
 class PantryItem(BaseModel):
     name: str
-    quantity: int
-    expiration_date: date
     category: str
+    quantity: Optional[int] = None
+    unit: Optional[str] = None
+    expiration_date: Optional[date] = None
 
 
 class AIRecipe(BaseModel):

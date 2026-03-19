@@ -9,9 +9,10 @@ class PantryItem(Base):
 
     id = Column(Integer, primary_key=True, index=True)
     name = Column(String, nullable=False)
-    quantity = Column(Integer, nullable=False)
-    expiration_date = Column(Date, nullable=False)
     category = Column(String, nullable=False)
+    quantity = Column(Integer, nullable=True)
+    unit = Column(String, nullable=True)
+    expiration_date = Column(Date, nullable=True)
     user_id = Column(Integer, ForeignKey("users.id"), nullable=False)
 
     owner = relationship("User", back_populates="pantry_items")
