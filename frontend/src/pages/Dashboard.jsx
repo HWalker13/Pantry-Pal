@@ -207,6 +207,8 @@ export default function Dashboard() {
                     pointerEvents: 'none',
                     zIndex: 0,
                     userSelect: 'none',
+                    mixBlendMode: 'multiply',
+                    opacity: 0.88,
                 }}
             />
 
