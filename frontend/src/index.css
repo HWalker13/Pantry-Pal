@@ -2,18 +2,18 @@
 @import url('https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,500;0,600;1,400&family=DM+Sans:wght@300;400;500&display=swap');
 
 :root {
-  --bg: #0F1410;
-  --surface: #1A2116;
-  --surface-2: #222B1C;
-  --border: #2E3D26;
-  --accent: #A85F30;
-  --accent-hover: #BF6E38;
-  --green: #5A7F40;
-  --green-hover: #6A944C;
-  --sage: #9DBF72;
-  --text: #EAE6D8;
-  --text-muted: #7A8A6A;
-  --shadow: 0 4px 24px rgba(0,0,0,0.5);
+  --bg: #F5F0E8;
+  --surface: #FFFFFF;
+  --surface-2: #F9F6F1;
+  --border: #E0D8CC;
+  --accent: #C4621D;
+  --accent-hover: #A85218;
+  --green: #5A8A5A;
+  --green-hover: #4A7A4A;
+  --text: #1A1A1A;
+  --text-muted: #6B6B6B;
+  --text-category: #4A4A4A;
+  --shadow: 0 2px 16px rgba(0,0,0,0.08);
 }
 
 * {
@@ -24,6 +24,8 @@
 
 body {
   background-color: var(--bg);
+  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='60' height='60'%3E%3Cline x1='10' y1='4' x2='10' y2='18' stroke='%23C4621D' stroke-width='1' stroke-opacity='0.07'/%3E%3Cline x1='8' y1='4' x2='8' y2='9' stroke='%23C4621D' stroke-width='0.7' stroke-opacity='0.07'/%3E%3Cline x1='12' y1='4' x2='12' y2='9' stroke='%23C4621D' stroke-width='0.7' stroke-opacity='0.07'/%3E%3Cellipse cx='40' cy='36' rx='5' ry='7' fill='none' stroke='%235A8A5A' stroke-width='0.7' stroke-opacity='0.06'/%3E%3Cline x1='40' y1='29' x2='40' y2='27' stroke='%235A8A5A' stroke-width='0.7' stroke-opacity='0.06'/%3E%3C/svg%3E");
+  background-size: 60px 60px;
   color: var(--text);
   font-family: 'DM Sans', sans-serif;
   font-weight: 300;
@@ -39,6 +41,7 @@ h3 {
 }
 
 input,
+select,
 button {
   font-family: 'DM Sans', sans-serif;
 }
