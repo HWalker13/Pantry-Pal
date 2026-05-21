@@ -77,7 +77,7 @@ export default function Login() {
         }}>
             {/* Vine — top right */}
             <img
-                src="/vine.jpg"
+                src="/vine.png"
                 alt=""
                 style={{
                     position: 'fixed',
@@ -87,13 +87,12 @@ export default function Login() {
                     pointerEvents: 'none',
                     zIndex: 0,
                     userSelect: 'none',
-                    mixBlendMode: 'multiply',
                     opacity: 0.88,
                 }}
             />
             {/* Vine — top left (flipped) */}
             <img
-                src="/vine.jpg"
+                src="/vine.png"
                 alt=""
                 style={{
                     position: 'fixed',
@@ -104,7 +103,6 @@ export default function Login() {
                     zIndex: 0,
                     userSelect: 'none',
                     transform: 'scaleX(-1)',
-                    mixBlendMode: 'multiply',
                     opacity: 0.88,
                 }}
             />

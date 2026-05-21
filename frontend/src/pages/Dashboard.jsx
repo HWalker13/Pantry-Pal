@@ -197,7 +197,7 @@ export default function Dashboard() {
         <div style={{ minHeight: '100vh', position: 'relative' }}>
             {/* Vine — top right */}
             <img
-                src="/vine.jpg"
+                src="/vine.png"
                 alt=""
                 style={{
                     position: 'absolute',
@@ -207,7 +207,6 @@ export default function Dashboard() {
                     pointerEvents: 'none',
                     zIndex: 0,
                     userSelect: 'none',
-                    mixBlendMode: 'multiply',
                     opacity: 0.88,
                 }}
             />
