@@ -13,7 +13,7 @@ export default function Navbar({ onLogout }) {
         <nav style={{
             background: 'var(--surface)',
             borderBottom: '1px solid var(--border)',
-            padding: '0 32px',
+            padding: '0 48px',
             height: '64px',
             display: 'flex',
             alignItems: 'center',

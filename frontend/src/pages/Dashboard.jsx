@@ -200,9 +200,10 @@ export default function Dashboard() {
             <main style={{ maxWidth: '860px', margin: '0 auto', padding: '48px 24px' }}>
 
                 {/* ── Section A: My Pantry ── */}
-                <div style={{ marginBottom: '48px' }}>
+                <div style={{ marginBottom: '72px' }}>
                     <h1 style={{
-                        fontSize: '38px',
+                        fontSize: '52px',
+                        fontWeight: '600',
                         letterSpacing: '-0.5px',
                         color: 'var(--accent)',
                         marginBottom: '8px',
@@ -223,7 +224,7 @@ export default function Dashboard() {
                     }}>
                         {/* Dark header strip */}
                         <div style={{
-                            background: '#1A1A1A',
+                            background: '#2C2416',
                             padding: '12px 20px',
                         }}>
                             <span style={{
@@ -336,9 +337,10 @@ export default function Dashboard() {
                 </div>
 
                 {/* ── Section B: Ingredients ── */}
-                <div style={{ marginBottom: '48px' }}>
+                <div style={{ marginBottom: '72px' }}>
                     <h2 style={{
-                        fontSize: '26px',
+                        fontSize: '38px',
+                        fontWeight: '600',
                         color: 'var(--accent)',
                         marginBottom: '16px',
                     }}>
@@ -432,11 +434,11 @@ export default function Dashboard() {
                                         marginBottom: '10px',
                                     }}>
                                         <span style={{
-                                            fontSize: '11px',
-                                            fontWeight: '600',
-                                            color: 'var(--text-category)',
+                                            fontSize: '10px',
+                                            fontWeight: '500',
+                                            color: 'var(--text-muted)',
                                             textTransform: 'uppercase',
-                                            letterSpacing: '1px',
+                                            letterSpacing: '1.2px',
                                         }}>
                                             {EMOJI[key] || '📦'} {key}
                                         </span>
@@ -467,7 +469,8 @@ export default function Dashboard() {
                 {/* ── Section C: Recipes ── */}
                 <div>
                     <h2 style={{
-                        fontSize: '26px',
+                        fontSize: '38px',
+                        fontWeight: '600',
                         color: 'var(--accent)',
                         marginBottom: '16px',
                     }}>

@@ -29,6 +29,7 @@ export default function PantryItem({ id, name, category, quantity, unit, expiryD
             border: '1px solid var(--border)',
             borderRadius: '12px',
             gap: '14px',
+            boxShadow: '0 1px 6px rgba(0,0,0,0.06)',
             transition: 'border-color 0.2s, box-shadow 0.2s',
             opacity: isDeleting ? 0.5 : 1,
         }}
