@@ -12,7 +12,7 @@ const AppIcon = () => (
 
 const inputStyle = {
     width: '100%',
-    padding: '11px 14px',
+    padding: '14px 16px',
     background: '#fff',
     border: '1px solid var(--border)',
     borderRadius: '10px',
@@ -73,16 +73,47 @@ export default function Login() {
             alignItems: 'center',
             justifyContent: 'center',
             padding: '24px',
+            position: 'relative',
         }}>
-            <div style={{ width: '100%', maxWidth: '440px' }}>
+            {/* Vine — top right */}
+            <img
+                src="/vine.jpg"
+                alt=""
+                style={{
+                    position: 'fixed',
+                    top: 0,
+                    right: 0,
+                    width: '320px',
+                    pointerEvents: 'none',
+                    zIndex: 0,
+                    userSelect: 'none',
+                }}
+            />
+            {/* Vine — top left (flipped) */}
+            <img
+                src="/vine.jpg"
+                alt=""
+                style={{
+                    position: 'fixed',
+                    top: 0,
+                    left: 0,
+                    width: '200px',
+                    pointerEvents: 'none',
+                    zIndex: 0,
+                    userSelect: 'none',
+                    transform: 'scaleX(-1)',
+                }}
+            />
+
+            <div style={{ width: '100%', maxWidth: '440px', position: 'relative', zIndex: 1 }}>
 
                 {/* Outer card */}
                 <div style={{
                     background: 'var(--surface)',
                     border: '1px solid var(--border)',
-                    borderRadius: '20px',
-                    padding: '40px',
-                    boxShadow: 'var(--shadow)',
+                    borderRadius: '24px',
+                    padding: '48px 40px',
+                    boxShadow: '0 8px 40px rgba(0,0,0,0.10)',
                 }}>
                     {/* Brand section */}
                     <div style={{ textAlign: 'center', marginBottom: '32px' }}>
@@ -90,8 +121,8 @@ export default function Login() {
                             <AppIcon />
                         </div>
                         <h1 style={{
-                            fontSize: '30px',
-                            letterSpacing: '-0.3px',
+                            fontSize: '42px',
+                            letterSpacing: '-0.5px',
                             color: 'var(--accent)',
                             marginBottom: '6px',
                         }}>
@@ -158,17 +189,18 @@ export default function Login() {
                                 style={{
                                     width: '100%',
                                     padding: '13px',
-                                    background: loading ? 'var(--border)' : 'var(--accent)',
+                                    background: loading ? 'var(--border)' : 'linear-gradient(135deg, #C4621D, #D4732E)',
                                     color: '#fff',
                                     border: 'none',
-                                    borderRadius: '10px',
+                                    borderRadius: '12px',
                                     fontSize: '15px',
                                     fontWeight: '500',
                                     cursor: loading ? 'not-allowed' : 'pointer',
-                                    transition: 'background 0.2s',
+                                    transition: 'opacity 0.2s, box-shadow 0.2s',
+                                    boxShadow: loading ? 'none' : '0 4px 16px rgba(196,98,29,0.35)',
                                 }}
-                                onMouseEnter={e => { if (!loading) e.target.style.background = 'var(--accent-hover)' }}
-                                onMouseLeave={e => { if (!loading) e.target.style.background = 'var(--accent)' }}
+                                onMouseEnter={e => { if (!loading) e.target.style.opacity = '0.9' }}
+                                onMouseLeave={e => { if (!loading) e.target.style.opacity = '1' }}
                             >
                                 {loading ? 'Signing in...' : 'Sign in'}
                             </button>

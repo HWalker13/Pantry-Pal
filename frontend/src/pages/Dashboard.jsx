@@ -194,10 +194,25 @@ export default function Dashboard() {
     ]
 
     return (
-        <div style={{ minHeight: '100vh' }}>
+        <div style={{ minHeight: '100vh', position: 'relative' }}>
+            {/* Vine — top right */}
+            <img
+                src="/vine.jpg"
+                alt=""
+                style={{
+                    position: 'absolute',
+                    top: 0,
+                    right: 0,
+                    width: '260px',
+                    pointerEvents: 'none',
+                    zIndex: 0,
+                    userSelect: 'none',
+                }}
+            />
+
             <Navbar onLogout={logout} />
 
-            <main style={{ maxWidth: '860px', margin: '0 auto', padding: '48px 24px' }}>
+            <main style={{ maxWidth: '860px', margin: '0 auto', padding: '48px 24px', position: 'relative', zIndex: 1 }}>
 
                 {/* ── Section A: My Pantry ── */}
                 <div style={{ marginBottom: '72px' }}>
@@ -207,6 +222,7 @@ export default function Dashboard() {
                         letterSpacing: '-0.5px',
                         color: 'var(--accent)',
                         marginBottom: '8px',
+                        textShadow: '0 2px 8px rgba(196,98,29,0.15)',
                     }}>
                         My Pantry
                     </h1>
@@ -315,18 +331,19 @@ export default function Dashboard() {
                                         disabled={adding}
                                         style={{
                                             padding: '10px 20px',
-                                            background: adding ? 'var(--border)' : 'var(--accent)',
+                                            background: adding ? 'var(--border)' : 'linear-gradient(135deg, #C4621D, #D4732E)',
                                             color: '#fff',
                                             border: 'none',
-                                            borderRadius: '10px',
+                                            borderRadius: '12px',
                                             fontSize: '14px',
                                             fontWeight: '500',
                                             cursor: adding ? 'not-allowed' : 'pointer',
-                                            transition: 'background 0.2s',
+                                            transition: 'opacity 0.2s',
+                                            boxShadow: adding ? 'none' : '0 4px 16px rgba(196,98,29,0.35)',
                                             whiteSpace: 'nowrap',
                                         }}
-                                        onMouseEnter={e => { if (!adding) e.target.style.background = 'var(--accent-hover)' }}
-                                        onMouseLeave={e => { if (!adding) e.target.style.background = 'var(--accent)' }}
+                                        onMouseEnter={e => { if (!adding) e.target.style.opacity = '0.9' }}
+                                        onMouseLeave={e => { if (!adding) e.target.style.opacity = '1' }}
                                     >
                                         {adding ? 'Adding...' : '+ Add'}
                                     </button>
@@ -590,18 +607,19 @@ export default function Dashboard() {
                             disabled={recipeLoading}
                             style={{
                                 padding: '12px 28px',
-                                background: recipeLoading ? 'var(--border)' : 'var(--accent)',
+                                background: recipeLoading ? 'var(--border)' : 'linear-gradient(135deg, #C4621D, #D4732E)',
                                 color: '#fff',
                                 border: 'none',
-                                borderRadius: '10px',
+                                borderRadius: '12px',
                                 fontSize: '15px',
                                 fontWeight: '500',
                                 cursor: recipeLoading ? 'not-allowed' : 'pointer',
-                                transition: 'background 0.2s',
+                                transition: 'opacity 0.2s',
+                                boxShadow: recipeLoading ? 'none' : '0 4px 16px rgba(196,98,29,0.35)',
                                 marginBottom: '32px',
                             }}
-                            onMouseEnter={e => { if (!recipeLoading) e.target.style.background = 'var(--accent-hover)' }}
-                            onMouseLeave={e => { if (!recipeLoading) e.target.style.background = 'var(--accent)' }}
+                            onMouseEnter={e => { if (!recipeLoading) e.target.style.opacity = '0.9' }}
+                            onMouseLeave={e => { if (!recipeLoading) e.target.style.opacity = '1' }}
                         >
                             {recipeLoading ? '✦ Thinking...' : '+ Find Recipes'}
                         </button>

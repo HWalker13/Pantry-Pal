@@ -11,7 +11,9 @@ const AppIcon = ({ size = 32 }) => (
 export default function Navbar({ onLogout }) {
     return (
         <nav style={{
-            background: 'var(--surface)',
+            background: 'rgba(255,255,255,0.85)',
+            backdropFilter: 'blur(8px)',
+            WebkitBackdropFilter: 'blur(8px)',
             borderBottom: '1px solid var(--border)',
             padding: '0 48px',
             height: '64px',
